@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Мой сайт</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Привет, мир!</h1>
+  <script src="script.js"></script>
+</body>
+</html>
+
+body {
+  font-family: Arial;
+  text-align: center;
+}
+
+console.log("Сайт работает!");
