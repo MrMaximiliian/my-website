@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uber Eats - Рестораны в Москве</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #fff;
+        }
+
+        /* ========== HEADER ========== */
+        .main-header {
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .logo span {
+            color: #06c167;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .login-btn {
+            padding: 8px 24px;
+            border: 1px solid #e0e0e0;
+            background: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cart-icon {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: #fff;
+            font-size: 18px;
+        }
+
+        /* ========== SEARCH BAR ========== */
+        .search-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 24px 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: #06c167;
+        }
+
+        .search-input::placeholder {
+            color: #999;
+        }
+
+        /* ========== RESTAURANTS SECTION ========== */
+        .restaurants-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .section-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #000;
+        }
+
+        .restaurants-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .restaurant-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+        }
+
+        .restaurant-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+
+        .restaurant-image {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .restaurant-info {
+            padding: 16px 0;
+        }
+
+        .restaurant-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #000;
+        }
+
+        .restaurant-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .restaurant-category {
+            color: #666;
+        }
+
+        .delivery-time {
+            color: #666;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background: #111;
+            color: #fff;
+            padding: 64px 24px 32px;
+            margin-top: 64px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 32px;
+            color: #fff;
+        }
+
+        .footer-logo span {
+            color: #06c167;
+        }
+
+        .language-selector {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 32px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr;
+            gap: 40px;
+            margin-bottom: 48px;
+        }
+
+        .footer-column h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column a {
+            color: #999;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: #fff;
+        }
+
+        .social-section {
+            margin-bottom: 48px;
+        }
+
+        .social-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .social-icon[title="Facebook"]:hover {
+            background: #1877F2;
+        }
+
+        .social-icon[title="Twitter"]:hover {
+            background: #000;
+        }
+
+        .social-icon[title="Instagram"]:hover {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        .app-badges {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .app-badge {
+            background: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            border: 1px solid #333;
+            transition: border-color 0.2s;
+        }
+
+        .app-badge:hover {
+            border-color: #06c167;
+        }
+
+        .app-badge-icon {
+            font-size: 24px;
+        }
+
+        .app-badge-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-badge-text span:first-child {
+            font-size: 10px;
+            color: #999;
+        }
+
+        .app-badge-text span:last-child {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .copyright {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            background: #06c167;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: background 0.2s;
+            z-index: 1000;
+        }
+
+        .scroll-top:hover {
+            background: #05a859;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .restaurants-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 16px;
+            }
+
+            .search-section {
+                padding: 24px 16px 16px;
+            }
+
+            .restaurants-section {
+                padding: 24px 16px;
+            }
+
+            .restaurants-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .section-title {
+                font-size: 22px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .app-badges {
+                flex-direction: column;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 16px;
+            }
+
+            .restaurant-image {
+                height: 200px;
+            }
+
+            .restaurant-name {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo">UBER <span>EATS</span></div>
+            <div class="header-actions">
+                <button class="login-btn">Войти</button>
+                <div class="cart-icon">🛒</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <input type="text" class="search-input" placeholder="Поиск по ресторанам и кухням">
+    </section>
+
+    <!-- Restaurants Section -->
+    <section class="restaurants-section">
+        <h1 class="section-title">Рестораны в Москве</h1>
+        
+        <div class="restaurants-grid">
+            <!-- Restaurant 1: McDonald's -->
+            <div class="restaurant-card">
+                <img src="img1/macdonalds.png" alt="Макдоналдс" class="restaurant-image">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">Макдоналдс — Газетный</h3>
+                    <div class="restaurant-meta">
+                        <div class="restaurant-category">₽₽ • Бургеры</div>
+                        <div class="delivery-time">25 - 35 мин</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Restaurant 2: DimSum -->
+            <div class="restaurant-card">
+                <img src="img1/dimSUM.png" alt="DimSum" class="restaurant-image">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">DimSum & Co — ЦДМ</h3>
+                    <div class="restaurant-meta">
+                        <div class="restaurant-category">₽ • Японская • Китайская • Азиатская</div>
+                        <div class="delivery-time">40 - 50 мин</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Restaurant 3: DvizhOK -->
+            <div class="restaurant-card">
+                <img src="img1/dvizhOK.png" alt="ДвижОК" class="restaurant-image">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">ДвижОК — Манежная</h3>
+                    <div class="restaurant-meta">
+                        <div class="restaurant-category">₽ • Американская • Европейская</div>
+                        <div class="delivery-time">35 - 45 мин</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Restaurant 4: NYA -->
+            <div class="restaurant-card">
+                <img src="img1/NYA.png" alt="НЯ" class="restaurant-image">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">НЯ — NYA</h3>
+                    <div class="restaurant-meta">
+                        <div class="restaurant-category">₽₽ • Вьетнамская</div>
+                        <div class="delivery-time">30 - 40 мин</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Restaurant 5: Tochka Dzy -->
+            <div class="restaurant-card">
+                <img src="img1/tochkaDZI.png" alt="Точка Дзы" class="restaurant-image">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">Точка Дзы — Цветной</h3>
+                    <div class="restaurant-meta">
+                        <div class="restaurant-category">₽₽ • Вьетнамская</div>
+                        <div class="delivery-time">40 - 50 мин</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Restaurant 6: Cinnabon -->
+            <div class="restaurant-card">
+                <img src="img1/cinnabon.png" alt="Cinnabon" class="restaurant-image">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">Cinnabon</h3>
+                    <div class="restaurant-meta">
+                        <div class="restaurant-category">₽ • Выпечка • Десерты • Капкейки</div>
+                        <div class="delivery-time">25 - 35 мин</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Restaurant 7: Pizzelove -->
+            <div class="restaurant-card">
+                <img src="img1/pizzeLove.png" alt="PIZZELOVE" class="restaurant-image">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">PIZZELOVE</h3>
+                    <div class="restaurant-meta">
+                        <div class="restaurant-category">₽₽ • Пицца</div>
+                        <div class="delivery-time">15 - 25 мин</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Restaurant 8: Zyukafe -->
+            <div class="restaurant-card">
+                <img src="img1/NYA.png" alt="Zю кафе" class="restaurant-image">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">Zю кафе — Тверская</h3>
+                    <div class="restaurant-meta">
+                        <div class="restaurant-category">₽₽ • Японская</div>
+                        <div class="delivery-time">25 - 35 мин</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Restaurant 9: Bar BQ -->
+            <div class="restaurant-card">
+                <img src="img1/barBQ.png" alt="Bar BQ" class="restaurant-image">
+                <div class="restaurant-info">
+                    <h3 class="restaurant-name">Bar BQ Cafe — Манежная</h3>
+                    <div class="restaurant-meta">
+                        <div class="restaurant-category">₽₽₽ • Европейская</div>
+                        <div class="delivery-time">30 - 40 мин</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">UBER <span>EATS</span></div>
+            
+            <button class="language-selector">🌐 Русский ▼</button>
+            
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>Об UberEats</h4>
+                    <ul>
+                        <li><a href="#">О нас</a></li>
+                        <li><a href="#">Станьте партнёром по доставке</a></li>
+                        <li><a href="#">Станьте партнёром-рестораном</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Все города</h4>
+                    <ul>
+                        <li><a href="#">Москва</a></li>
+                        <li><a href="#">Санкт-Петербург</a></li>
+                        <li><a href="#">Казань</a></li>
+                        <li><a href="#">Екатеринбург</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Помощь</h4>
+                    <ul>
+                        <li><a href="#">Цены</a></li>
+                        <li><a href="#">Помощь</a></li>
+                        <li><a href="#">FAQs</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="social-section">
+                <h4 class="social-title">#UberEats</h4>
+                <div class="social-links">
+                    <a href="#" class="social-icon" title="Facebook">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon" title="Twitter">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon" title="Instagram">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="app-badges">
+                <a href="#" class="app-badge">
+                    <span class="app-badge-icon"></span>
+                    <div class="app-badge-text">
+                        <span>Download on the</span>
+                        <span>App Store</span>
+                    </div>
+                </a>
+                <a href="#" class="app-badge">
+                    <span class="app-badge-icon">▶️</span>
+                    <div class="app-badge-text">
+                        <span>GET IT ON</span>
+                        <span>Google Play</span>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">© 2017 Uber Technologies Inc.</div>
+                <div class="footer-links">
+                    <a href="#">Обработка персональных данных</a>
+                    <a href="#">Пользовательское соглашение</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <button class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+</body>
+</html>
